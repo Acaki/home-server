@@ -90,6 +90,28 @@ services:
       - PHPLDAPADMIN_LDAP_HOSTS=openldap
       - PHPLDAPADMIN_HTTPS=false
 
+  fail2ban:
+    container_name: fail2ban
+    image: crazymax/fail2ban:latest
+    restart: always
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - "${CONFIGROOT}/fail2ban:/data"
+      - "${CONFIGROOT}/bitwarden:/bitwarden:ro"
+      - "${CONFIGROOT}/organizr:/organizr:ro"
+      - "/var/log:/var/log:ro"
+    environment:
+      - TZ=${TZ}
+      - SSMTP_HOST=${SMTP_HOST}
+      - SSMTP_HOSTNAME=${DOMAIN}
+      - SSMTP_USER=${SMTP_USER}
+      - SSMTP_PASSWORD=${SMTP_PASS}
+      - SSMTP_TLS=YES
+      - SSMTP_STARTTLS=YES
+
   organizr:
     container_name: organizr
     image: organizr/organizr:latest
@@ -120,6 +142,7 @@ services:
     volumes:
       - ${CONFIGROOT}/bitwarden:/data
     environment:
+      - TZ=${TZ}
       - WEBSOCKET_ENABLED=true
       - SIGNUPS_ALLOWED=false
       - ADMIN_TOKEN=${BITWARDEN_ADMIN_TOKEN}
@@ -129,6 +152,7 @@ services:
       - SMTP_SSL=true
       - SMTP_USERNAME=${SMTP_USER}
       - SMTP_PASSWORD=${SMTP_PASS}
+      - LOG_FILE=/data/bitwarden.log
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bitwarden.entrypoints=websecure"
