@@ -439,7 +439,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${CONFIGROOT}/db/mariadb:/var/lib/mysql
-      - ./mysql/init:/docker-entrypoint-initdb.d
 
   postgres:
     container_name: postgres
