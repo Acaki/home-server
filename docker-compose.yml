@@ -195,7 +195,7 @@ services:
 
   jackett:
     container_name: jackett
-    image: sclemenceau/docker-jackett:cloudproxy
+    image: ghcr.io/linuxserver/jackett:latest
     depends_on:
       - traefik
     restart: always
@@ -220,8 +220,8 @@ services:
       - "traefik.http.routers.jackett-api.priority=2"
 
   cloudproxy:
-    image: noahcardoza/cloudproxy
-    container_name: cloudproxy
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
     restart: always
 
   sonarr:
