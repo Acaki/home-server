@@ -75,7 +75,7 @@ services:
     depends_on:
       - openldap
     ports:
-      - 8083:80
+      - 8084:80
     volumes:
       - ${CONFIGROOT}/openldap/db:/var/lib/ldap
       - ${CONFIGROOT}/openldap/config:/etc/ldap/slapd.d
